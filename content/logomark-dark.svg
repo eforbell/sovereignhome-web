@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="#6BAF3D"/>
+  
+  <!-- Stem -->
+  <path d="M256 410V240" stroke="#141310" stroke-width="24" stroke-linecap="round"/>
+  
+  <!-- Left leaf -->
+  <path d="M256 300C216 300 172 260 172 216C216 216 256 256 256 300Z" fill="#141310" opacity="0.85"/>
+  
+  <!-- Right leaf -->
+  <path d="M256 240C296 240 340 196 340 152C296 152 256 196 256 240Z" fill="#141310" opacity="0.65"/>
+  
+  <!-- Root hints -->
+  <path d="M256 410C236 432 212 444 188 448" stroke="#141310" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
+  <path d="M256 410C276 432 300 444 324 448" stroke="#141310" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
+</svg>
