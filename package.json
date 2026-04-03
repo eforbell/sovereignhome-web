@@ -1,0 +1,9 @@
+{
+  "name": "sovereignhome-web",
+  "description": "The Sovereign Home — static site for sovereignhome.org",
+  "private": true,
+  "scripts": {
+    "serve": "python3 -m http.server 8080 --bind 0.0.0.0 --directory content",
+    "serve:node": "npx --yes serve content --listen tcp://0.0.0.0:8080"
+  }
+}
