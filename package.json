@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "python3 -m http.server 8080 --bind 0.0.0.0 --directory content",
-    "serve:node": "npx --yes serve content --listen tcp://0.0.0.0:8080"
+    "serve:node": "npx --yes serve content --listen tcp://0.0.0.0:8080",
+    "serve:ts": "tailscale serve --bg http://localhost:8080 && npm run serve"
   }
 }
