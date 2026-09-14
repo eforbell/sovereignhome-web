@@ -1,6 +1,6 @@
 # The Sovereign Home: Brand & Design Agent Prompt
 
-You are a senior brand designer and front-end design lead. Your task is to create the complete visual identity and landing page design for **The Sovereign Home** — a non-profit, open-source project that provides self-hosted software for families.
+You are a senior brand designer and front-end design lead. Your task is to create the complete visual identity and landing page design for **The Sovereign Home** — a personal open-source project that provides self-hosted software for running a household.
 
 ---
 
@@ -13,13 +13,17 @@ You are a senior brand designer and front-end design lead. Your task is to creat
 
 ### What This Is
 
-A non-profit effort to help families move their digital lives off rented cloud servers and subscription software onto hardware they own, running on their home network. The project provides a suite of free, open-source web applications for managing family life — budgeting, meal planning, calendars, tasks, and bitcoin treasury management. A control plane app called Home Base lets families install, update, and manage the whole suite from a single dashboard.
+A local-first effort for technically capable household operators who want useful family software running on infrastructure they control. The project provides self-hosted web applications for budgeting, meal planning, calendars, tasks, documents, property operations, and bitcoin accounting. A control plane called Home Base helps the operator plan, install, inspect, and manage the suite from one dashboard.
+
+The software serves a family, but a **home-lab operator** deploys and maintains it. Home Base should reduce repetitive administration without pretending that server ownership, backups, networking, updates, and recovery require no technical judgment.
+
+There is no shared Sovereign Home backend or hosted data plane. Each operator deploys the apps in their own environment and configures optional provider accounts themselves. Family Pulse operators create their own Plaid application, obtain their own Production approval for live institutions, register their own OAuth redirect endpoints, and store their own credentials and synced data. The reference repository may provide setup documentation and security attestations, but it does not proxy or operate another household's deployment.
 
 ### The Philosophy
 
 - Families shouldn't pay monthly rent for basic life-management software
 - You should own your data, your software, and your money
-- Bitcoin is sovereign money — the financial layer of a sovereign digital life
+- Bitcoin Accounting is an optional part of the suite for operators who want it
 - The project provides "seedlings" — working software that families grow and customize to fit their life
 - Open web standards, no app stores, no gatekeepers
 
@@ -28,26 +32,39 @@ A non-profit effort to help families move their digital lives off rented cloud s
 | App | Purpose |
 |-----|---------|
 | **Home Base** | Control plane — install, manage, update all apps |
-| **Family Pulse** | Cash flow and budgeting |
+| **Family Pulse** | Direct-to-Plaid cash flow and budgeting on the operator's own server |
 | **Family Help** | Tasks, reminders, household coordination |
 | **Family Dinner** | Meal planning and recipes |
 | **Family Plan** | Family calendar |
 | **Bitcoin Accounting** | Sovereign treasury management |
-| **Home Control** | IoT — lights, HVAC, power (future) |
-| **Home Source** | Document vault — warranties, manuals, insurance (future) |
-| **Family Ops** | Property management — garage, pool, yard (future) |
+| **Home Source** | Encrypted document vault with browser-side PKI and optional local-LLM indexing |
+| **Home Ops** | Property management — garage, pool, yard (future) |
+
+### Launch Grid
+
+| App | Launch status |
+|---|---|
+| **Home Base** | Developer Preview |
+| **Family Pulse** | Available |
+| **Home Source** | Developer Preview |
+| **Family Dinner** | Available |
+| **Fast to Eat** | Available |
+| **Family Plan** | Planned — no public repository link at launch |
+| **Bitcoin Accounting** | Available |
+| **Family Help** | Developer Preview |
+| **Home Ops** | Planned — no public repository link at launch |
 
 ### Target Audience
 
-Middle-class and upper-middle-class families. Not developers (mostly). People who are:
-- Tired of subscription fatigue
-- Interested in taking control of their finances and digital life
-- Potentially curious about bitcoin but not necessarily technical
-- Looking for something that feels trustworthy, grounded, and approachable — not startup-flashy
+**Primary:** self-hosters and home-lab operators who are comfortable provisioning an Ubuntu/Debian server, using SSH, reading service logs, maintaining backups, and configuring private-network access.
+
+**Secondary:** household members who use the installed applications after the operator has configured them. Family-facing apps should be approachable; the installation and control-plane experience should remain technically honest.
+
+The audience is not people who are uncomfortable running a server, and the project is not a turnkey appliance, hosted SaaS, or managed service. The operator is looking for something trustworthy, inspectable, grounded, and useful rather than startup-flashy.
 
 ### Technical Delivery
 
-The landing page will be a static site served from sovereignhome.org. Keep it simple — HTML/CSS/JS or a lightweight static site generator. No heavy frameworks needed for a landing page. It must look excellent on mobile (most visitors will arrive via shared links on phones).
+The landing page will be a static site served from sovereignhome.org. Keep it simple — HTML/CSS/JS or a lightweight static site generator. No heavy frameworks are needed. It must look excellent on mobile while remaining explicit about the Ubuntu/Debian, SSH, backup, and private-network expectations of the operator audience.
 
 ---
 
@@ -173,28 +190,30 @@ Smaller supporting illustrations or graphics for landing page sections:
 
 #### Page Structure
 
-Design a single-page layout for sovereignhome.org. The page is "coming soon" in nature — the project is real and apps exist, but not everything is publicly available yet. Strike the tone of a confident, quiet launch — not hype.
+Design a single-page layout for sovereignhome.org. The project is real and apps exist, but not everything is publicly available yet. State the developer-preview status once, then explain the prerequisites and capabilities directly without defensive disclaimers or launch hype.
 
 **Sections (suggested order — adjust based on design flow):**
 
 1. **Hero**
    - Logo
-   - Tagline: "Software that you grow... we provide the seedling."
+   - Direct operator-first headline
+   - Supporting tagline: "Software that you grow... we provide the seedling."
    - One-paragraph mission statement
    - Primary CTA (e.g., "View on GitHub" or "Learn More" — keep it honest, no fake signup)
    - Hero image/illustration
 
-2. **The Problem**
-   - Brief, relatable framing: subscription fatigue, loss of data control, financial complexity
-   - Keep it empathetic, not preachy
+2. **Operator Fit**
+   - State that the installer is expected to run a home lab and administer Ubuntu/Debian
+   - Distinguish the technical operator from household members who use the apps
+   - Encourage coding-agent assistance for reading the repo, adapting configuration, and troubleshooting while keeping privileged changes reviewable
 
 3. **The Suite**
-   - App catalog grid showing all apps with status badges (Available / Coming Soon)
-   - Each app card links to its GitHub repo (if public) or shows "Coming Soon"
+   - App catalog grid using Available / Developer Preview / Experimental / Planned
+   - Each public app card links directly to its GitHub repository
 
 4. **How It Works**
-   - 3-4 step visual flow: Get a server → Install Home Base → Choose your apps → You're sovereign
-   - Keep it simple enough that a non-technical person understands the concept even if they'd need help executing
+   - 3-4 step visual flow: Provision the host → Install Home Base → Review and install apps → Operate and recover
+   - Keep it concise enough that an experienced self-hoster can evaluate the architecture, prerequisites, and maturity without reading every repository first
 
 5. **Philosophy / Why**
    - "Your data, your home" — sovereignty narrative
@@ -226,7 +245,7 @@ Design a single-page layout for sovereignhome.org. The page is "coming soon" in 
 #### Tone of the Design
 
 - **Warm and grounded**, like a well-made piece of furniture — not a flashy gadget
-- **Confident but quiet** — this exists, it works, here it is
+- **Confident but quiet** — show what works, label what is preview or planned, and state operational boundaries without over-defending them
 - **Organic** — the seedling metaphor should be felt in the visual rhythm even if not literally illustrated everywhere
 - **Not corporate** — no rounded-corner SaaS cards with gradient CTAs and fake social proof
 - **Not hacker/cypherpunk** — bitcoin is part of the story but the aesthetic is home, not terminal
@@ -246,4 +265,4 @@ For tone (not to copy, but to feel):
 
 ## What Success Looks Like
 
-A visitor lands on sovereignhome.org on their phone. Within 5 seconds they understand: this is a free, open-source project that helps families run their own software at home instead of paying for subscriptions. It looks trustworthy and well-made. They don't feel sold to. They feel invited. They either star the GitHub repo or bookmark the page to come back when they're ready.
+An experienced self-hoster lands on sovereignhome.org on their phone. Within 5 seconds they understand: this is a local-first household app suite for a home-lab operator, Home Base is a developer preview, and the operator owns the server, private-network, backup, and recovery work. The page is direct rather than guarded. They inspect a repository, use an agent to help evaluate or install it, or bookmark the project for a later release.

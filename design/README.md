@@ -109,9 +109,8 @@ Fraunces is a soft, old-style display serif that gives the brand warmth and edit
 | Family Dinner | CookingPot / UtensilsCrossed |
 | Family Plan | CalendarDays |
 | Bitcoin Accounting | Landmark / BookOpen / Receipt |
-| Home Control | SlidersHorizontal / Lightbulb / Thermometer |
 | Home Source | FileArchive / FolderTree |
-| Family Ops | Wrench / Hammer / Trees |
+| Home Ops | Wrench / Hammer / Trees |
 
 ---
 
@@ -166,8 +165,9 @@ No fake signup forms, no waitlist theater.
 
 ### Status system
 - **Available**
-- **Preview**
-- **Coming Soon**
+- **Developer Preview**
+- **Experimental**
+- **Planned**
 
 Use pills with low saturation; never loud gradients.
 

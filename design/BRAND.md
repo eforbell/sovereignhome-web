@@ -106,9 +106,8 @@ Maintain padding equal to the height of one leaf around all sides of the logo.
 | Family Dinner | `coffee` | Accent terracotta |
 | Family Plan | `calendar` | Info blue |
 | Bitcoin Accounting | `dollar-sign` (or custom ₿) | Secondary gold |
-| Home Control | `sparkles` | Muted (coming soon) |
-| Home Source | `file-text` | Muted (coming soon) |
-| Family Ops | `wrench` | Muted (coming soon) |
+| Home Source | `file-text` | Info blue (developer preview) |
+| Home Ops | `wrench` | Muted (planned) |
 
 ---
 
@@ -119,6 +118,15 @@ Maintain padding equal to the height of one leaf around all sides of the logo.
 3. **Organic rhythm** — Generous whitespace. Let content breathe. The seedling metaphor is felt in the pacing, not plastered everywhere.
 4. **Mobile-first** — Every design decision prioritizes the phone viewport. Desktop is the enhancement.
 5. **Accessible** — WCAG AA contrast ratios throughout. Proper heading hierarchy. Keyboard navigable.
+6. **Operator-first and direct** — The software serves a household, but a capable self-hoster deploys it. State prerequisites, optional integrations, and preview status plainly without turning the page into a liability disclaimer.
+
+### Audience Model
+
+- **Primary:** home-lab operators comfortable with Ubuntu/Debian, SSH, service logs, backups, and private-network access.
+- **Secondary:** household members using the installed family-facing applications.
+- **Agent assistance:** encourage operators to use a coding agent to inspect the repositories, adapt configuration, and troubleshoot, while reviewing privileged changes before execution.
+- **Deployment boundary:** there is no shared Sovereign Home backend. Each operator owns their server, application instances, provider accounts, OAuth endpoints, credentials, and data.
+- **Not the audience:** people seeking a hosted service or maintenance-free consumer appliance.
 
 ---
 
