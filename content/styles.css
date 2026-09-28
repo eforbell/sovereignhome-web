@@ -487,6 +487,43 @@ header {
   .film-play-time { opacity: 1; font-weight: 600; }
 }
 
+/* Soft-launch status line under the hero CTAs */
+.launch-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: calc(-1 * var(--space-lg)) auto var(--space-xl);
+  padding: 0.35em 0.95em;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.launch-dot {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-secondary-light);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-secondary-light) 55%, transparent);
+  animation: launchPulse 2.4s ease-out infinite;
+}
+
+@keyframes launchPulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-secondary-light) 55%, transparent); }
+  70%, 100% { box-shadow: 0 0 0 7px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-dot { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .launch-note { border-radius: var(--radius-lg); text-align: left; }
+}
+
 /* ═══════════════════════════════════════════
    PROBLEM SECTION
    ═══════════════════════════════════════════ */
@@ -565,7 +602,7 @@ header {
   text-decoration: none;
 }
 
-.app-card:hover {
+a.app-card:hover {
   border-color: var(--color-primary);
   box-shadow: 0 2px 16px color-mix(in srgb, var(--color-primary) 10%, transparent);
   color: var(--color-text);
@@ -608,10 +645,27 @@ header {
 }
 
 .app-card-cta {
-  margin-top: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-md);
   color: var(--color-primary);
   font-size: var(--text-sm);
   font-weight: 600;
+}
+
+.app-card-cta-soon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.app-card-cta-soon::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-secondary-light);
 }
 
 .app-card-featured {
