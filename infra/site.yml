@@ -1,0 +1,239 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  The Sovereign Home static site. Private S3 origin behind CloudFront (OAC),
+  ACM certificate for the primary and secondary domains, 301 redirect of every
+  alias to https://sovereignhome.org, and security response headers.
+  Deploy in us-east-1 (CloudFront only reads ACM certificates from there).
+
+# DNS is hosted at Cloudflare, not Route 53. While this stack creates the
+# certificate, copy the validation CNAMEs from the stack events (or the ACM
+# console) into Cloudflare as DNS-only records; the stack continues once ACM
+# issues. Leave those records in place so the certificate auto-renews.
+
+Parameters:
+  PrimaryDomain:
+    Type: String
+    Default: sovereignhome.org
+  SecondaryDomain:
+    Type: String
+    Default: sovereign-home.org
+  BucketName:
+    Type: String
+    Default: sovereignhome-org-site
+
+Resources:
+  SiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      # Versioning makes a bad publish a one-command rollback.
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-old-versions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref PrimaryDomain
+      SubjectAlternativeNames:
+        - !Sub "www.${PrimaryDomain}"
+        - !Ref SecondaryDomain
+        - !Sub "www.${SecondaryDomain}"
+      ValidationMethod: DNS
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${BucketName}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # Viewer-request: 301 every alias to the primary host; map directory URIs to
+  # index.html. Other hosts (the *.cloudfront.net name) pass through so the
+  # distribution can be tested before DNS points at it.
+  EdgeFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: sovereignhome-edge
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Redirect aliases to the primary domain; index.html for directories
+        Runtime: cloudfront-js-2.0
+      FunctionCode: !Sub |
+        var PRIMARY = '${PrimaryDomain}';
+        var ALIASES = ['www.${PrimaryDomain}', '${SecondaryDomain}', 'www.${SecondaryDomain}'];
+
+        function querystring(qs) {
+          var parts = [];
+          for (var key in qs) {
+            var entry = qs[key];
+            var values = entry.multiValue ? entry.multiValue : [entry];
+            for (var i = 0; i < values.length; i++) {
+              parts.push(values[i].value === '' ? key : key + '=' + values[i].value);
+            }
+          }
+          return parts.length ? '?' + parts.join('&') : '';
+        }
+
+        function handler(event) {
+          var request = event.request;
+          var host = request.headers.host ? request.headers.host.value.toLowerCase() : '';
+
+          if (ALIASES.indexOf(host) !== -1) {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: {
+                location: { value: 'https://' + PRIMARY + request.uri + querystring(request.querystring) },
+                'cache-control': { value: 'public, max-age=86400' }
+              }
+            };
+          }
+
+          var uri = request.uri;
+          if (uri.endsWith('/')) {
+            request.uri = uri + 'index.html';
+          } else if (uri.split('/').pop().indexOf('.') === -1) {
+            request.uri = uri + '/index.html';
+          }
+          return request;
+        }
+
+  SecurityHeaders:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: sovereignhome-security-headers
+        Comment: Matches the production policy in SECURITY.md
+        SecurityHeadersConfig:
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 63072000
+            IncludeSubdomains: true
+            Preload: false
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: >-
+              default-src 'self'; style-src 'self' https://fonts.googleapis.com;
+              font-src 'self' https://fonts.gstatic.com; img-src 'self' data:;
+              media-src 'self'; script-src 'self'; object-src 'none';
+              base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+            Override: true
+        CustomHeadersConfig:
+          Items:
+            - Header: Permissions-Policy
+              Value: camera=(), microphone=(), geolocation=(), interest-cohort=()
+              Override: true
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Comment: The Sovereign Home
+        Enabled: true
+        Aliases:
+          - !Ref PrimaryDomain
+          - !Sub "www.${PrimaryDomain}"
+          - !Ref SecondaryDomain
+          - !Sub "www.${SecondaryDomain}"
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Certificate
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        PriceClass: PriceClass_100
+        DefaultRootObject: index.html
+        Origins:
+          - Id: site-bucket
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt OriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: site-bucket
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods: [GET, HEAD]
+          CachedMethods: [GET, HEAD]
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
+          ResponseHeadersPolicyId: !Ref SecurityHeaders
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt EdgeFunction.FunctionMetadata.FunctionARN
+        # Without s3:ListBucket, S3 answers 403 for missing keys.
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+          - ErrorCode: 404
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 60
+
+  SiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref SiteBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontOAC
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt SiteBucket.Arn
+              - !Sub "${SiteBucket.Arn}/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+
+Outputs:
+  BucketName:
+    Value: !Ref SiteBucket
+  DistributionId:
+    Value: !Ref Distribution
+  DistributionDomainName:
+    Description: Point all four hostnames here (Cloudflare CNAME, DNS only)
+    Value: !GetAtt Distribution.DomainName
+  CertificateArn:
+    Value: !Ref Certificate
