@@ -602,7 +602,7 @@ header {
   text-decoration: none;
 }
 
-.app-card:hover {
+a.app-card:hover {
   border-color: var(--color-primary);
   box-shadow: 0 2px 16px color-mix(in srgb, var(--color-primary) 10%, transparent);
   color: var(--color-text);
@@ -645,7 +645,8 @@ header {
 }
 
 .app-card-cta {
-  margin-top: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-md);
   color: var(--color-primary);
   font-size: var(--text-sm);
   font-weight: 600;
