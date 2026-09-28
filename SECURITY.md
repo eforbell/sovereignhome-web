@@ -12,7 +12,7 @@ Do not add secrets, private household information, inline third-party scripts, a
 
 Local development commands may bind to `0.0.0.0`. Use them only on a trusted network or behind appropriate firewall/VPN controls. Production hosting should use HTTPS, HSTS, `X-Content-Type-Options`, and a restrictive referrer policy.
 
-Any Content Security Policy must be tested against the actual page. The current site loads styles from `fonts.googleapis.com`, fonts from `fonts.gstatic.com`, and has an inline reveal script. A strict target after moving that script to an external file is: `default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`. Do not add a broad `unsafe-inline` allowance merely to avoid externalizing the script.
+Any Content Security Policy must be tested against the actual page. The current site loads styles from `fonts.googleapis.com`, fonts from `fonts.gstatic.com`, first-party video from `media/`, and a single external script (`site.js`). The production policy is: `default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'`. Do not add inline scripts or a broad `unsafe-inline` allowance.
 
 ## Reporting a vulnerability
 

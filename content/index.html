@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Sovereign Home — Self-hosted software for running a household</title>
   <meta name="description" content="A local-first app suite for home-lab operators who want household software running on infrastructure they control.">
-  <link rel="canonical" href="https://www.sovereignhome.org/">
+  <link rel="canonical" href="https://sovereignhome.org/">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="images/logomark.svg">
@@ -15,16 +15,19 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.sovereignhome.org/">
+  <meta property="og:url" content="https://sovereignhome.org/">
   <meta property="og:title" content="The Sovereign Home — Self-hosted household software">
   <meta property="og:description" content="A local-first app suite for home-lab operators, running on infrastructure they control.">
-  <meta property="og:image" content="https://www.sovereignhome.org/images/hero-seedling.png">
+  <meta property="og:image" content="https://sovereignhome.org/media/intro-og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="675">
+  <meta property="og:image:alt" content="The Sovereign Home title card: a seedling with roots below and household app icons above">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Sovereign Home">
   <meta name="twitter:description" content="A local-first app suite for home-lab operators, running on infrastructure they control.">
-  <meta name="twitter:image" content="https://www.sovereignhome.org/images/hero-seedling.png">
+  <meta name="twitter:image" content="https://sovereignhome.org/media/intro-og.jpg">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,6 +58,7 @@
     </a>
     <nav aria-label="Primary">
       <ul class="nav-links">
+        <li><a href="#tour">Tour</a></li>
         <li><a href="#apps">Apps</a></li>
         <li><a href="#how">How It Works</a></li>
         <li><a href="#why">Why</a></li>
@@ -90,8 +94,43 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
         View the source
       </a>
-      <a href="#apps" class="btn btn-secondary">Explore the previews</a>
+      <a href="#tour" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>
+        Watch the 2-min intro
+      </a>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ INTRO FILM ═══════════ -->
+<section class="section film" id="tour" aria-labelledby="tour-title">
+  <div class="container">
+    <p class="film-eyebrow reveal">The two-minute tour</p>
+    <h2 id="tour-title" class="section-heading reveal">From seedling to suite</h2>
+    <p class="section-sub reveal">What runs on your server, who it is for, and how Home Base keeps the operator in the loop.</p>
+    <figure class="film-frame reveal">
+      <video id="intro-video" controls playsinline preload="none" poster="media/intro-poster.jpg" width="1920" height="1080" aria-label="The Sovereign Home: two-minute introduction (music, no narration)">
+        <source src="media/intro-720.mp4" type="video/mp4" media="(max-width: 800px)">
+        <source src="media/intro-1080.mp4" type="video/mp4">
+        <p>Your browser cannot play this video. <a href="media/intro-1080.mp4">Download the introduction (MP4)</a>.</p>
+      </video>
+      <button class="film-play" type="button" hidden>
+        <span class="film-play-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.6-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/></svg>
+          <span class="film-play-label">Play the intro</span> <span class="film-play-time">2:00</span>
+        </span>
+      </button>
+    </figure>
+    <ol class="film-chapters reveal" aria-label="Chapters">
+      <li><button type="button" data-t="0"><span class="chap-time">0:00</span>The seedling</button></li>
+      <li><button type="button" data-t="9.6"><span class="chap-time">0:10</span>Someone else&rsquo;s cloud</button></li>
+      <li><button type="button" data-t="24"><span class="chap-time">0:24</span>What if it lived at home?</button></li>
+      <li><button type="button" data-t="38.4"><span class="chap-time">0:38</span>The suite</button></li>
+      <li><button type="button" data-t="43.2"><span class="chap-time">0:43</span>App tour</button></li>
+      <li><button type="button" data-t="81.6"><span class="chap-time">1:22</span>How it works</button></li>
+      <li><button type="button" data-t="96"><span class="chap-time">1:36</span>Why it exists</button></li>
+      <li><button type="button" data-t="105.6"><span class="chap-time">1:46</span>Grow your own</button></li>
+    </ol>
   </div>
 </section>
 
@@ -351,24 +390,7 @@
   </div>
 </footer>
 
-<script>
-(function() {
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => observer.observe(el));
-})();
-</script>
+<script src="site.js" defer></script>
 
 </body>
 </html>
