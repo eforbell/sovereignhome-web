@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="180" height="180">
+  <!-- Source for apple-touch-icon.png (iOS home screen). Regenerate with:
+         rsvg-convert -w 180 -h 180 apple-touch-icon.svg | magick png:- -background '#0b1620' -alpha remove -alpha off apple-touch-icon.png
+       Differs from favicon.svg on purpose: full-bleed with no corner radius, because iOS
+       applies its own squircle mask (self-rounding would double up and leave dark corners),
+       and the wheel is inset further so that mask never clips a spoke. -->
+  <rect width="24" height="24" fill="#0b1620"/>
+  <g fill="none" stroke="#d4a857" stroke-width="1.6" stroke-linecap="round"
+     transform="translate(12 12) scale(0.68) translate(-12 -12)">
+    <circle cx="12" cy="12" r="3"/>
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M12 1v6M12 17v6M1 12h6M17 12h6M4.2 4.2l4.3 4.3M15.5 15.5l4.3 4.3M19.8 4.2l-4.3 4.3M8.5 15.5l-4.3 4.3"/>
+  </g>
+</svg>
