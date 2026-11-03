@@ -37,6 +37,7 @@ APPS=(
   "home-base          homeBase/public/favicon.svg"
   "home-ops           homeOps/public/favicon.svg"
   "home-source        homeSource/public/favicon.svg"
+  "remind-me          remindMe/public/apple-touch-icon.svg"
 )
 
 for entry in "${APPS[@]}"; do
